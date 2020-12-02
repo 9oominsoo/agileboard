@@ -42,7 +42,7 @@
         </td> 
         <td>
           <% %i(to_do in_progress complete feedback end).each do |state| %>
-            <a href="#" class="changeStateBtn mr-3 <%= function.aasm_state.eql?(state.to_s) ? "color-primary state-border" : "text-gray"%>"><%= I18n.t("enum.function.aasm_state.#{state}") %></a>
+            <a href="#" class="changeStateBtn mr-3 <%= function.aasm_state.eql?(state.to_s) ? "color-primary state-border" : "text-gray"%>" data-state="<%= state %>" data-functionid="<%= function.id %>"><%= I18n.t("enum.function.aasm_state.#{state}") %></a>
           <% end %>
         </td> 
       </tr>
@@ -63,21 +63,25 @@
       url: "/functions/"+$(this).data("id")+"/edit",
       type: "get",
       success: function(data) {
-        $('#function-modal-' + $(this).data("id")).modal('show');
       },
-      error: function(data) {}
+      error: function(error) {
+        console.log(error)
+      }
     });
   });
 
   $(".changeStateBtn").click(function(){
-    alert("hi")
+    var functionid = $(this).data("functionid");
+    var state = $(this).data("state");
     Rails.ajax({
-      url: "/functions/"+$(this).data("id")+"/edit",
-      type: "get",
+      url: "<%= update_state_functions_path %>?id=" + functionid + "&state=" + state,
+      type: "PUT",
       success: function(data) {
-        $('#function-modal-' + $(this).data("id")).modal('show');
+        location.reload();
       },
-      error: function(data) {}
+      error: function(error) {
+        console.log(error)
+      }
     });
   })
 </script>

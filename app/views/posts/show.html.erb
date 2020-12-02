@@ -4,6 +4,13 @@
     color: rgb(7, 3, 130) !important;
     padding: 0 8px 0 8px !important;
   }
+  .post-body p img{
+    width: 100%;
+  }
+  .card-img-top {
+    max-height: 400px;
+    overflow: hidden;
+  }
 </style>
 
 <div class="container">
@@ -18,8 +25,11 @@
         <div class="card-body">
           <h4><%= @post.title %></h4>
           <hr class="my-3">
-          <p><%= @post.body.html_safe rescue "" %></p>
+          <div class="post-body">
+            <p><%= @post.body.html_safe rescue "" %></p>
+          </div>
           <h5 class="mt-5 mb-4">댓글</h5>
+          <hr/>
           <%= render partial:"comments/form", locals: {commentable: @post} %>
           <div id="comment-list">
             <% @comments.each do |comment| %>

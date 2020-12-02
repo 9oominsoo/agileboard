@@ -19,7 +19,7 @@ class ProjectsController < ApplicationController
     end
 
     @sort = @functions.ransack(params[:q])
-    @sort_functions = @sort.result
+    @sort_functions = @sort.result.order(id: :asc)
     @time_hash = Hash.new
     @time_arr = []
     count = [@project.functions.all.count,0,0,0,0]

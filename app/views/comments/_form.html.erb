@@ -1,27 +1,15 @@
 <%= form_for @comment ||= Comment.new, method: :post, remote: true do |f|%>
   <div class="form-group">
-    <%= f.text_area :comment, id: "input_form", class: "form-control", placeholder: "입력 란" %>
+    <%= f.label "태그" %>
+    <%= f.select :mention_list , options_for_select(User.all.map {|u| [u.name, u.id]}),{},{multiple: true , class: "form-control mb-3"}%>
+    <%= f.label "내용" %>
+    <%= f.text_area :comment, id: "comment-textarea", class: "form-control", placeholder: "입력 란" %>
     <%= f.hidden_field :commentable_type, value: "Posts" %>
     <%= f.hidden_field :commentable_id, value: commentable.id %>
     <%= f.hidden_field :user_id, value: current_user.id %>
-    <p></p>
-    <%= f.fields_for :mention, Mention.new do |mention_attribute| %>
-      <%= mention_attribute.select :mentionable_id, 
-        User.all.map{|user| [user.name, user.id]},
-        class: 'form-control',
-        id: 'select-mentionable'
-      %>
-    <%end%>
   </div>
   <%= f.submit "입력", class: "btn btn-primary btn-md" %>
 <% end %>
 
 <script>
-$('#select-mentionable').select2({
-    placeholder: 'Select mentionee'
-});
-$('#select-mentionable').on('select2:select', function(e){
-  var id = e.params.data.id;
-  var value = $(this).val();
-});
 </script>

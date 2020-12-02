@@ -1,7 +1,7 @@
 class Comment < ActiveRecord::Base
   include ActsAsCommentable::Comment
   acts_as_mentioner
-
+  acts_as_taggable_on :mention
   belongs_to :commentable, :polymorphic => true
 
   default_scope -> { order('created_at DESC') }

@@ -2,10 +2,19 @@
 .project-conversations {
   border: 1px solid #ededed;
 }
+.card-img-top {
+  max-height: 160px;
+  overflow: hidden;
+  object-fit: cover; 
+  position: center;
+}
 </style>
 
 <%= render 'shared/section',title: "Project Dashboard" %>
 <div class="container bg-white p-3 mb-3">
+  <div class="text-right mt-3">
+    <%= link_to "채팅방 열기", "#", class: "color-primary mr-2", data: {toggle: "modal", target: "#conversation-modal"} %>
+  </div>
   <ul class="nav nav-tabs">
     <li class="nav-item">
       <a class="nav-link active" data-toggle="tab" href="#status">프로젝트 개발 현황</a>
@@ -17,17 +26,17 @@
       <a class="nav-link" data-toggle="tab" href="#assign">개발자별 할당량</a>
     </li>
   </ul>
+  
   <div class="tab-content">
     <div class="tab-pane fade show active" id="status">
       <%= render "status_info", project: @project %>
     </div>
+
     <div class="tab-pane fade" id="process">
-      <%# <%= line_chart @functions.group(:aasm_state).group_by_day(:start_at, last: 30).count, xtitle: "date", ytitle: "value" %> 
-      <%# <%= line_chart @time_hash.group(:key), xtitle: "date", ytitle: "value" %>
-      <%# <%= @time_arr.pluck(:to_do_updated_at) %>
-     <div class="my-5 text-center">상태별 날짜 당 기능 수</div>
+      <div class="my-5 text-center">상태별 날짜 당 기능 수</div>
       <%= line_chart @res %> 
     </div>
+
     <div class="tab-pane fade" id="assign">
       <%= render "assign_info", project: @project %>
     </div>
@@ -37,16 +46,39 @@
   <!-- 기능 항목 -->
   <%= render "functions/functions" %>
 
-  <!-- 프로젝트 채팅 -->
   <div>
-    <h5 class="mt-5 mb-2">채팅방</h5>
-    <div class="project-conversations">
-      <div class="col-md-12">
-        <ul id="conversations-list">
-          <% @conversations.each do |conversation| %>
-            <%= render 'conversations/conversation', conversation: conversation %>
-          <% end %>
-        </ul>
+    <div class="row justify-content-between ml-1 mr-4">
+      <h5 class="mt-5 mb-4">프로젝트 게시글 (<%= @project.posts.count %>개)</h5>
+      <%= link_to "게시글 작성하기", new_post_path, class: "mt-5 mb-4 color-primary" %>
+    </div>
+    <div class="row col-md-12">
+      <% @project.posts.order(created_at: :desc).limit(3).each do |post| %>
+        <%= render post %>
+      <% end %>
+    </div>
+  </div>
+
+  <div class="modal fade" id="conversation-modal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal-dialog" role="document">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title" id="exampleModalLabel">채팅방</h5>
+          <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+            <span aria-hidden="true">&times;</span>
+          </button>
+        </div>
+        <div class="modal-body">
+          <!-- 프로젝트 채팅 -->
+          <div>
+              <div class="col-md-12">
+                <ul id="conversations-list">
+                  <% @conversations.each do |conversation| %>
+                    <%= render 'conversations/conversation', conversation: conversation %>
+                  <% end %>
+                </ul>
+              </div>
+          </div>
+        </div>
       </div>
     </div>
   </div>

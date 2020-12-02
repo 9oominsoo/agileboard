@@ -1,6 +1,6 @@
-TITLES = ["Ruby On Rails", "Spring Boot", "React", "Node Express", "Php", "Python and Django", "Android", "IOS"]
-
-SIMAGES=['test1.jpg', 'test2.jpg', 'test3.jpg', 'test4.jpg', 'test5.jpg', 'app.png', 'rails1.png','8.app.jpg','9.ios.png','android1.jpg','html.jpg','ios.jpg','ios2.jpg','ios3.jpg','ios10.png','rails.png','rails3.png','react.jpg','react2.jpg','web.jpg']
+TITLES = ["Ruby On Rails","React", "Android", "IOS"]
+PIMAGES=['test1.jpg', 'test2.jpg', 'test3.jpg', 'test4.jpg', 'test5.jpg','test6.jpg']
+SIMAGES=['test1.jpg', 'test2.jpg', 'test3.jpg', 'test4.jpg', 'test5.jpg', 'app.png', 'rails1.png','android1.jpg','html.jpg','ios1.jpg','ios2.jpg','ios3.jpg','rails1.png','react2.jpg','web.jpg']
 ROOT= "/public/image/seedimage/"
 STATUS= [:to_do,:in_progress,:complete ,:feedback, :end]
 FUNC_NAME = ["로그인 및 회원가입", "User", "active admin","로그인 및 회원가입 UI", "Post 기본 CRUD","Post 검색 기능", "Post UI","Project CRUD", "Project 검색 기능", "Project UI", "Function CRUD", "Function 그래프", "Function 검색 및 정렬", "Function UI", "배포"]
@@ -23,6 +23,9 @@ def get_project
 end
 
 def destroy_all_data
+  Conversation.destroy_all
+  puts "Conversation 삭제"
+
   Post.destroy_all
   puts "Post 삭제"
 
@@ -38,9 +41,9 @@ end
 
 def generate_project title = "프로젝트"
   
-  5.times do 
+  TITLES.each do |project| 
     image_field = File.open(("#{Rails.root}"+ROOT+SIMAGES.shuffle.first))
-    Project.create(name: TITLES.shuffle.first + " " + title, description: Faker::Lorem.sentence(word_count: 100), image: image_field, start_at: Date.today, end_at: Date.today + 10.days, updated_at: Date.today + Random.rand(10).days)
+    Project.create(name: project + " " + title, description: Faker::Lorem.sentence(word_count: 100), image: image_field, start_at: Date.today, end_at: Date.today + 10.days, updated_at: Date.today + Random.rand(10).days)
     puts "프로젝트 생성"
   end
 end
@@ -93,14 +96,14 @@ end
 
 def generate_posts_broken_sunset
   5.times do 
-    image_field = File.open(("#{Rails.root}"+ROOT+SIMAGES.shuffle.first))
+    image_field = File.open(("#{Rails.root}"+ROOT+PIMAGES.shuffle.first))
     post = Post.create( user: get_user, title: Faker::Computer.platform + " 게시글", body: Faker::Lorem.sentence(word_count: 100), project: get_project_broken_sunset, image: image_field )
     puts "broken sunset 게시글 생성"
   end
 end
 
 def generate_project_broken_sunset
-  image_field = File.open(("#{Rails.root}"+ROOT+SIMAGES.shuffle.first))
+  image_field = File.open(("#{Rails.root}"+ROOT+"sunset.jpg"))
   Project.create(name: "Broken Sunset", description: Faker::Lorem.sentence(word_count: 100), image: image_field, start_at: Date.today - 60.days, end_at: Date.today + 30.days, updated_at: Date.today)
   puts "broken sunset 프로젝트 생성"
 end
@@ -136,3 +139,4 @@ generate_project_broken_sunset
 generate_userprojects_broken_sunset
 generate_posts_broken_sunset
 generate_functions_broken_sunset
+AdminUser.create!(email: 'admin@example.com', password: 'password', password_confirmation: 'password') if Rails.env.development?

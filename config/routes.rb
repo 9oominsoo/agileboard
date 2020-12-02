@@ -1,7 +1,7 @@
 Rails.application.routes.draw do
   devise_for :admin_users, ActiveAdmin::Devise.config
-  mount ActionCable.server => '/cable'
   ActiveAdmin.routes(self)
+  mount ActionCable.server => '/cable'
   devise_for :users
   root 'home#index'
   get 'home/index'
@@ -30,8 +30,8 @@ end
   resources :comments
   resources :messages
   resources :functions do
-    member do
-      get :set_state
+    collection do
+      put :update_state
     end
   end
 

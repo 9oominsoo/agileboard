@@ -23,7 +23,6 @@ ActiveAdmin.register Project do
     end
     column :start_at
     column :end_at
-    column :project_status
     column :users do |project|
       project.users
     end
@@ -38,7 +37,7 @@ ActiveAdmin.register Project do
       row :end_at
       row :project_status
       row :image do |project|
-        image_tag(project.image.url)
+        image_tag(project.image.url, style: "width: 100px; height: 100px;")
       end
       row :users do |project|
         project.users
@@ -52,7 +51,7 @@ ActiveAdmin.register Project do
       f.input :description
       f.input :start_at
       f.input :end_at #if f.object.new_record?
-      f.input :project_status
+      # f.input :project_status
       f.input :users, as: :check_boxes, multiple: true, collection: User.all.map{|u| ["#{u.name}, #{u.email}", u.id]}
       f.input :image, as: :file
       #f.input :emails, as: :select, collection: User.all.map{|u| u.id} 

@@ -25,9 +25,8 @@ gem 'devise'
 gem 'devise-i18n'
 
 gem 'activeadmin'
-gem 'active_skin'
 gem 'activeadmin_addons'
-gem 'arctic_admin'
+gem 'active_skin'
 
 gem 'bootstrap', '~> 4.3.1'
 gem 'webpacker', '~> 3.5'

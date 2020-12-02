@@ -3,7 +3,7 @@ class PostsController < ApplicationController
   before_action :load_post, only: %i(show edit destroy update)
 
   def search
-    @result = Post.ransack(title_i_cont: params[:q], body_i_cont: params[:q], m: 'or').result.page(params[:page]).per(9)
+    @result = Post.ransack(title_or_body_cont: params[:q]).result.page(params[:page]).per(9)
   end
 
   def index

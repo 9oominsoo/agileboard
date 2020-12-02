@@ -37,7 +37,7 @@
       <%= link_to post_path(post), class: "text-dark" do %>
         <h5 class="font-weight-bold"><%= post.title %></h5>
       <% end %>
-      <p class="card-text"><%= post.body.truncate(120) %></p>
+      <p class="card-text"><%= simple_format post.body.truncate(120) %></p>
       <div class="row justify-content-between small text-muted mt-2 px-3">
         <div class="color-primary"><%= post.project.name %></div>
         <div class="color-gray"><%= pretty_date post.created_at %></div>
